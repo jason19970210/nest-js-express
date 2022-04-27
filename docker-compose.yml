@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  db:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./tmp/data/db:/data/db
+
+  server:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - "8082:8082"
+    depends_on:
+      - db
+    environment:
+      - MONGO_URI=mongo://
+      # or seperate
+      # - MONGO_USERNAME=<USER>
+      # - MONGO_PASSWORD=<PASSWORD>
+      # - MONGO_HOST=<HOST>
+      # - MONGO_PORT=<PORT>
+    
