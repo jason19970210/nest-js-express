@@ -23,6 +23,8 @@ export class ValidationPipe implements PipeTransform {
     // https://stackoverflow.com/questions/55571773/validation-on-optional-parameter-using-class-validator-in-nestjs
     const errors = await validate(object, {
       skipMissingProperties: true,
+      skipNullProperties: true,
+      skipUndefinedProperties: true,
       forbidUnknownValues: true,
       stopAtFirstError: true,
       transform: true,

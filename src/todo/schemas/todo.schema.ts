@@ -8,12 +8,17 @@
 // })
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Transform } from 'class-transformer';
+import { Document, ObjectId } from 'mongoose';
 
 export type TodoDocument = Todo & Document;
 
 @Schema()
 export class Todo {
+
+  @Transform(({ value }) => value.toString())
+  _id: ObjectId;
+
   @Prop({ required: true, minlength: 1, maxlength: 30 })
   content: string;
 

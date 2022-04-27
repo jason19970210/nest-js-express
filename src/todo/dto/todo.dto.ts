@@ -7,32 +7,30 @@ import {
   Min,
   Max,
   MinLength,
-  MaxLength
+  MaxLength,
+  Matches
 } from 'class-validator';
-import mongoose from 'mongoose';
+import { Types } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TodoDTO {
 
-  @ApiProperty(
-    {
-      description: 'the document(record) unique id',
-      type: 'mongoose.Schema.Types.ObjectId',
-    }
-  )
   @IsString()
   // readonly _id?: string;
-  readonly _id?: mongoose.Schema.Types.ObjectId;
-
+  readonly _id?: Types.ObjectId;
 
 
   @ApiProperty(
     {
       description: 'the todo content',
       type: String,
-      required: true
+      required: true,
+      minLength: 1,
+      maxLength: 30
     }
   )
+  // @Matches('[\u4e00-\u9fa5_a-zA-Z0-9_]{1,30}')
+  @Matches(/^[\u4e00-\u9fa5a-zA-Z0-9]+$/)
   @IsString()
   @IsNotEmpty()
   // https://www.npmjs.com/package/class-validator#user-content-passing-context-to-decorators
@@ -51,7 +49,9 @@ export class TodoDTO {
       description: 'the todo priority',
       type: Number,
       required: true,
-      default: 0
+      default: 0,
+      minimum: 0,
+      maximum: 3
     }
   )
   @IsInt()
@@ -64,24 +64,10 @@ export class TodoDTO {
   readonly priority?: number;
 
 
-  @ApiProperty(
-    {
-      description: 'the todo statement',
-      type: Boolean,
-      default: false
-    }
-  )
   @IsBoolean()
   readonly done?: boolean;
 
 
-  @ApiProperty(
-    {
-      description: 'the create datetime of todo',
-      type: Date,
-      default: 'Date.now()'
-    }
-  )
   @IsDate()
   readonly createdDatetime?: Date;
 }
