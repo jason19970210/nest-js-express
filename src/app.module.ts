@@ -1,11 +1,13 @@
-import { Module } from '@nestjs/common';
+import { BeforeApplicationShutdown, MiddlewareConsumer, Module, NestModule, OnApplicationShutdown, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { AppMiddleware } from './app.middleware';
 
 import { TodoModule } from './todo/todo.module';
 
 import MongoConfigFactory from './config/mongo.config';
+import mongoose from 'mongoose';
 
 @Module({
   imports: [
@@ -24,4 +26,35 @@ import MongoConfigFactory from './config/mongo.config';
     TodoModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements
+  NestModule,
+  OnModuleInit,
+  onApplicationBootstrap,
+  OnModuleDestroy,
+  BeforeApplicationShutdown,
+  OnApplicationShutdown {
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AppMiddleware).forRoutes('*')
+  };
+
+  onModuleInit() {
+    console.log('module onModuleDestroy');
+  }
+
+  onApplicationBootstrap(){
+    console.log('module onApplicationBootstrap');
+  }
+
+  onModuleDestroy(): any {
+    console.log('module onModuleDestroy');
+  };
+
+  beforeApplicationShutdown(signal?: string): any {
+    console.log('module beforeApplicationShutdown');
+  };
+
+  onApplicationShutdown(signal?: string): any {
+    console.log('module onApplicationShutdown');
+  };
+}

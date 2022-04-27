@@ -12,6 +12,8 @@ async function bootstrap() {
   // https://docs.nestjs.com/security/csrf
   // app.use(csurf());
 
+  app.enableShutdownHooks();
+
   const config = new DocumentBuilder()
     .setTitle('Todo API Documentation')
     .setDescription('The Todo API description')
