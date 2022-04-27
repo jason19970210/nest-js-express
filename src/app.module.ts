@@ -1,4 +1,4 @@
-import { BeforeApplicationShutdown, MiddlewareConsumer, Module, NestModule, OnApplicationShutdown, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { BeforeApplicationShutdown, OnApplicationBootstrap, MiddlewareConsumer, Module, NestModule, OnApplicationShutdown, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -7,7 +7,6 @@ import { AppMiddleware } from './app.middleware';
 import { TodoModule } from './todo/todo.module';
 
 import MongoConfigFactory from './config/mongo.config';
-import mongoose from 'mongoose';
 
 @Module({
   imports: [
@@ -29,7 +28,7 @@ import mongoose from 'mongoose';
 export class AppModule implements
   NestModule,
   OnModuleInit,
-  onApplicationBootstrap,
+  OnApplicationBootstrap,
   OnModuleDestroy,
   BeforeApplicationShutdown,
   OnApplicationShutdown {
@@ -42,7 +41,7 @@ export class AppModule implements
     console.log('module onModuleDestroy');
   }
 
-  onApplicationBootstrap(){
+  onApplicationBootstrap() {
     console.log('module onApplicationBootstrap');
   }
 
