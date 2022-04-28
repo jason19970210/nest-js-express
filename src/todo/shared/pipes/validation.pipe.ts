@@ -36,6 +36,7 @@ export class ValidationPipe implements PipeTransform {
     }
     return value;
   }
+
   private toValidate(metatype): boolean {
     const types = [String, Boolean, Number];
     // const types = [String, Boolean, Number, Array, Object];
